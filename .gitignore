@@ -1,0 +1,36 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!cmake/*.cmake
+!cmake/*.cmake.in
+
+# Compiled executables
+hello_world
+file_serve
+rest_api
+# Test executables
+test_0_sync_complex
+test_1_async_interactive
+test_2_async_file
+test_3_async_exec
+test_4_async_handler
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
