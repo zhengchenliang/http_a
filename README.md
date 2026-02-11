@@ -6,6 +6,50 @@
 
 High-performance, header-only HTTP/1.1 & HTTP/2 server library for modern C++, built on [h2o](https://github.com/h2o/h2o) and [libuv](https://github.com/libuv/libuv).
 
+## Benchmark
+
+On my computer: i7-1355U (10C/12T), 32GB RAM, Arch Linux 6.17.9, GCC 15.2.1
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                              BENCHMARK SUMMARY                                                  ┃
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┫
+┃ Test                          ┃ Conns ┃   Req/sec    ┃  Lat avg   ┃  Lat max  ┃    Errors       ┃
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━╋━━━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━┫
+┃ sync  plaintext               ┃   100 ┃       256552 ┃     0.39ms ┃     7.2ms ┃               0 ┃
+┃ async plaintext               ┃   100 ┃       202489 ┃     0.49ms ┃     4.6ms ┃               0 ┃
+┃ sync  JSON                    ┃   100 ┃       250323 ┃     0.40ms ┃    13.6ms ┃               0 ┃
+┃ async JSON                    ┃   100 ┃       196178 ┃     0.51ms ┃    13.5ms ┃               0 ┃
+┃ sync  POST echo               ┃   100 ┃       231302 ┃     0.43ms ┃    11.3ms ┃               0 ┃
+┃ async POST echo               ┃   100 ┃       188111 ┃     0.53ms ┃    11.2ms ┃               0 ┃
+┃ async build JSON              ┃   100 ┃       181112 ┃     0.55ms ┃    10.3ms ┃               0 ┃
+┃ async POST process            ┃   100 ┃       181589 ┃     0.55ms ┃    10.7ms ┃               0 ┃
+┃ async multi-header            ┃   100 ┃       185227 ┃     0.54ms ┃     4.4ms ┃               0 ┃
+┃ async 4KB                     ┃   100 ┃       166739 ┃     0.60ms ┃    10.8ms ┃               0 ┃
+┃ async 4KB gzip                ┃   100 ┃       166262 ┃     0.60ms ┃    15.2ms ┃               0 ┃
+┃ sync  4KB                     ┃   100 ┃       182345 ┃     0.55ms ┃    23.0ms ┃               0 ┃
+┃ sync  4KB gzip                ┃   100 ┃        53844 ┃     1.88ms ┃    62.1ms ┃               0 ┃
+┃ sync  plain t=4               ┃   200 ┃       230229 ┃     0.89ms ┃    55.7ms ┃               0 ┃
+┃ sync  plain t=8               ┃   200 ┃       236511 ┃     0.89ms ┃    64.0ms ┃               0 ┃
+┃ sync  plain t=16              ┃   200 ┃       235511 ┃     0.84ms ┃    56.3ms ┃               0 ┃
+┃ async plain t=4               ┃   200 ┃       185329 ┃     1.14ms ┃    77.3ms ┃               0 ┃
+┃ async plain t=8               ┃   200 ┃       184871 ┃     1.08ms ┃    30.2ms ┃               0 ┃
+┃ async plain t=16              ┃   200 ┃       182591 ┃     1.07ms ┃    39.4ms ┃               0 ┃
+┃ sync  c=1                     ┃     1 ┃        90985 ┃     0.01ms ┃     1.7ms ┃               0 ┃
+┃ sync  c=10                    ┃    10 ┃       231882 ┃     0.03ms ┃     1.3ms ┃               0 ┃
+┃ sync  c=50                    ┃    50 ┃       238788 ┃     0.20ms ┃     5.3ms ┃               0 ┃
+┃ sync  c=100                   ┃   100 ┃       235789 ┃     0.42ms ┃    10.1ms ┃               0 ┃
+┃ sync  c=200                   ┃   200 ┃       226346 ┃     0.95ms ┃    71.4ms ┃               0 ┃
+┃ sync  c=500                   ┃   500 ┃       209038 ┃     2.95ms ┃   268.4ms ┃               0 ┃
+┃ async c=1                     ┃     1 ┃        41664 ┃     0.02ms ┃     1.4ms ┃               0 ┃
+┃ async c=10                    ┃    10 ┃       193993 ┃     0.04ms ┃     1.3ms ┃               0 ┃
+┃ async c=50                    ┃    50 ┃       202646 ┃     0.24ms ┃     4.6ms ┃               0 ┃
+┃ async c=100                   ┃   100 ┃       196516 ┃     0.51ms ┃     5.9ms ┃               0 ┃
+┃ async c=200                   ┃   200 ┃       180491 ┃     1.12ms ┃    39.1ms ┃               0 ┃
+┃ async c=500                   ┃   500 ┃       170816 ┃     3.02ms ┃   143.6ms ┃               0 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┛
+
+Scaling flat. Bottleneck at single uv loop anyways.
+
 ## Features
 
 - **High Performance** — Built on h2o, one of the fastest HTTP servers
